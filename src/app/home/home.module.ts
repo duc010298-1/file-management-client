@@ -10,6 +10,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatTableModule } from '@angular/material/table';
 import { FileSizePipe } from '../core/pipe/file-size.pipe';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 
 @NgModule({
@@ -26,6 +27,7 @@ import { FileSizePipe } from '../core/pipe/file-size.pipe';
     MatCardModule,
     MatPaginatorModule,
     MatTableModule,
+    MatProgressBarModule,
   ]
 })
 export class HomeModule { }

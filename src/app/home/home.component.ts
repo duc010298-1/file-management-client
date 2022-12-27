@@ -1,6 +1,7 @@
-import { HttpHeaders } from '@angular/common/http';
+import { HttpEventType, HttpHeaders } from '@angular/common/http';
 import { AfterViewInit, ChangeDetectorRef, Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { finalize } from 'rxjs';
 import { FileService } from '../core/services/file.service';
 import { SharedService } from '../shared/shared.service';
 
@@ -18,6 +19,9 @@ export class HomeComponent implements AfterViewInit {
 
   listData = [];
   displayedColumns: string[] = ['index', 'file_name', 'file_size', 'created', 'tool'];
+
+  isUploading = false
+  uploadProgress = 0;
 
   constructor(
     private route: ActivatedRoute,
@@ -169,5 +173,31 @@ export class HomeComponent implements AfterViewInit {
         }
       }
     });
+  }
+
+  onFileSelected(event: any) {
+    const files = event.target.files;
+    if (files.length === 0) {
+      return;
+    }
+    const formData = new FormData();
+    for (let i = 0; i < files.length; i++) {
+      formData.append(i.toString(), files[i]);
+    }
+
+    this.isUploading = true;
+    const upload$ = this.fileService.uploadFile(formData).pipe(
+      finalize(() => {
+        this.uploadProgress = 0;
+        this.isUploading = false;
+        this.sharedService.openNotifyDialog('Notify', 'Upload file successfully');
+      })
+    );
+
+    upload$.subscribe((event: any) => {
+      if (event.type == HttpEventType.UploadProgress) {
+        this.uploadProgress = Math.round(100 * (event.loaded / event.total));
+      }
+    })
   }
 }

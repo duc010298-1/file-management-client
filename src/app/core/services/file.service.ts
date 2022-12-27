@@ -25,6 +25,13 @@ export class FileService {
     return this.http.get(this.listFileUrl, { params });
   }
 
+  uploadFile(formData: any) {
+    return this.http.post(this.uploadFileUrl, formData, {
+      reportProgress: true,
+      observe: 'events'
+    });
+  }
+
   downloadFile(id: any) {
     return this.http.get(this.downloadFileUrl + id, { responseType: 'blob', observe: 'response' });
   }
