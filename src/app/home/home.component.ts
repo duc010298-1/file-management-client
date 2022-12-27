@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { FileService } from '../core/services/file.service';
 
 @Component({
   selector: 'app-home',
@@ -7,4 +8,7 @@ import { Component } from '@angular/core';
 })
 export class HomeComponent {
 
+  constructor(
+    private fileService: FileService
+  ) {}
 }
