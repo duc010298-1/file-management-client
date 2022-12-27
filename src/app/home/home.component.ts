@@ -190,6 +190,7 @@ export class HomeComponent implements AfterViewInit {
       finalize(() => {
         this.uploadProgress = 0;
         this.isUploading = false;
+        this.requestSearch(this.pageSize, this.pageIndex, true);
         this.sharedService.openNotifyDialog('Notify', 'Upload file successfully');
       })
     );
