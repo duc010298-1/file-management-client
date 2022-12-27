@@ -24,4 +24,8 @@ export class FileService {
       .set('page', page);
     return this.http.get(this.listFileUrl, { params });
   }
+
+  downloadFile(id: any) {
+    return this.http.get(this.downloadFileUrl + id, { responseType: 'blob', observe: 'response' });
+  }
 }

@@ -1,3 +1,4 @@
+import { HttpHeaders } from '@angular/common/http';
 import { AfterViewInit, ChangeDetectorRef, Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FileService } from '../core/services/file.service';
@@ -90,5 +91,67 @@ export class HomeComponent implements AfterViewInit {
       queryParams,
       replaceUrl: true
     });
+  }
+
+  async download(id: any) {
+    this.fileService.downloadFile(id)
+      .subscribe({
+        next: (response: any) => {
+          const url = window.URL.createObjectURL(response.body);
+          const anchor = document.createElement('a');
+          anchor.href = url;
+          anchor.download = this.getFilenameFromHeaders(response.headers) || 'file';
+          anchor.click();
+          URL.revokeObjectURL(url);
+        },
+        error: (error: any) => {
+          const detail = error.error[Object.keys(error.error)[0]][0] || error.statusText || error.status;
+          switch (detail) {
+            default:
+              console.error(detail);
+              this.sharedService.openNotifyDialog('Error', 'Failed to load data, please reload the page');
+          }
+        }
+      });
+  }
+
+  private getFilenameFromHeaders(headers: HttpHeaders) {
+    // The content-disposition header should include a suggested filename for the file
+    const contentDisposition = headers.get('Content-Disposition');
+    if (!contentDisposition) {
+      return null;
+    }
+
+    const leadIn = 'filename=';
+    const start = contentDisposition.search(leadIn);
+    if (start < 0) {
+      return null;
+    }
+
+    // Get the 'value' after the filename= part (which may be enclosed in quotes)
+    const value = contentDisposition.substring(start + leadIn.length).trim();
+    if (value.length === 0) {
+      return null;
+    }
+
+    // If it's not quoted, we can return the whole thing
+    const firstCharacter = value[0];
+    if (firstCharacter !== '\"' && firstCharacter !== '\'') {
+      return value;
+    }
+
+    // If it's quoted, it must have a matching end-quote
+    if (value.length < 2) {
+      return null;
+    }
+
+    // The end-quote must match the opening quote
+    const lastCharacter = value[value.length - 1];
+    if (lastCharacter !== firstCharacter) {
+      return null;
+    }
+
+    // Return the content of the quotes
+    return value.substring(1, value.length - 1);
   }
 }

@@ -46,7 +46,7 @@
         <ng-container matColumnDef="tool">
             <th mat-header-cell *matHeaderCellDef></th>
             <td mat-cell *matCellDef="let element">
-                <button mat-mini-fab color="primary">
+                <button mat-mini-fab color="primary" (click)="download(element.id)">
                     <mat-icon>download</mat-icon>
                 </button>
                 <button class="ml-10px" mat-mini-fab color="warn">
