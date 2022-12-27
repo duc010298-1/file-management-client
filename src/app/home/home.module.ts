@@ -9,11 +9,13 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatCardModule } from '@angular/material/card';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatTableModule } from '@angular/material/table';
+import { FileSizePipe } from '../core/pipe/file-size.pipe';
 
 
 @NgModule({
   declarations: [
-    HomeComponent
+    HomeComponent,
+    FileSizePipe,
   ],
   imports: [
     CommonModule,
