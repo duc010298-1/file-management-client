@@ -93,7 +93,7 @@ export class HomeComponent implements AfterViewInit {
     });
   }
 
-  async download(id: any) {
+  downloadFile(id: any) {
     this.fileService.downloadFile(id)
       .subscribe({
         next: (response: any) => {
@@ -153,5 +153,21 @@ export class HomeComponent implements AfterViewInit {
 
     // Return the content of the quotes
     return value.substring(1, value.length - 1);
+  }
+
+  deleteFile(id: any) {
+    this.fileService.deleteFile(id).subscribe({
+      next: (response: any) => {
+        this.requestSearch(this.pageSize, this.pageIndex, true);
+      },
+      error: (error: any) => {
+        const detail = error.error[Object.keys(error.error)[0]][0] || error.statusText || error.status;
+        switch (detail) {
+          default:
+            console.error(detail);
+            this.sharedService.openNotifyDialog('Error', 'Failed to load data, please reload the page');
+        }
+      }
+    });
   }
 }

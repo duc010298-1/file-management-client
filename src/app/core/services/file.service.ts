@@ -28,4 +28,8 @@ export class FileService {
   downloadFile(id: any) {
     return this.http.get(this.downloadFileUrl + id, { responseType: 'blob', observe: 'response' });
   }
+
+  deleteFile(id: any) {
+    return this.http.delete(this.deleteFileUrl + id);
+  }
 }
