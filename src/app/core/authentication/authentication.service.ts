@@ -1,4 +1,4 @@
-import { HttpBackend, HttpClient } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map, Observable, of } from 'rxjs';
 import { ConstantDef } from '../constant-def';
@@ -14,15 +14,12 @@ export interface LoginContext {
   providedIn: 'root'
 })
 export class AuthenticationService {
-  private httpClient: HttpClient;
   private loginUrl = ConstantDef.API_URL + 'api/token/';
 
   constructor(
-    handler: HttpBackend,
+    private http: HttpClient,
     private credentialsService: CredentialsService,
-  ) {
-    this.httpClient = new HttpClient(handler);
-  }
+  ) { }
 
   /**
  * Authenticates the user.
@@ -34,7 +31,7 @@ export class AuthenticationService {
     formData.append('username', context.username);
     formData.append('password', context.password);
 
-    return this.httpClient.post(this.loginUrl, {
+    return this.http.post(this.loginUrl, {
       username: context.username,
       password: context.password
     })
