@@ -1,4 +1,4 @@
-import { AfterViewInit, Component } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FileService } from '../core/services/file.service';
 import { SharedService } from '../shared/shared.service';
@@ -16,12 +16,14 @@ export class HomeComponent implements AfterViewInit {
   pageSizeOptions: number[] = [25, 50, 100, 200];
 
   listData = [];
+  displayedColumns: string[] = ['index', 'file_name', 'file_size', 'created'];
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private sharedService: SharedService,
-    private fileService: FileService
+    private fileService: FileService,
+    private cdr: ChangeDetectorRef,
   ) { }
 
   ngAfterViewInit(): void {
@@ -31,6 +33,7 @@ export class HomeComponent implements AfterViewInit {
       if (this.isNormalInteger(pageSizeParam) && this.isNormalInteger(pageIndexParam)) {
         this.pageSize = Number(pageSizeParam);
         this.pageIndex = Number(pageIndexParam);
+        this.cdr.detectChanges();
       }
       if (pageSizeParam !== undefined && pageIndexParam !== undefined) {
         this.requestSearch(this.pageSize, this.pageIndex, true);

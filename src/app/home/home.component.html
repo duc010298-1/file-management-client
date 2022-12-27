@@ -13,7 +13,40 @@
         [pageSizeOptions]="pageSizeOptions" showFirstLastButtons
         (page)="paginatorBottom.pageSize = $event.pageSize; paginatorBottom.pageIndex = $event.pageIndex; onPageEvent($event)">
     </mat-paginator>
-    aaaa
+
+    <table mat-table [dataSource]="listData" class="mat-elevation-z8">
+        <ng-container matColumnDef="index">
+            <th mat-header-cell *matHeaderCellDef>No</th>
+            <td mat-cell *matCellDef="let element; let i = index;">
+                {{ pageIndex * pageSize + i + 1 }}
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="file_name">
+            <th mat-header-cell *matHeaderCellDef>File Name</th>
+            <td mat-cell *matCellDef="let element">
+                {{ element.file_name }}
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="file_size">
+            <th mat-header-cell *matHeaderCellDef>Size</th>
+            <td mat-cell *matCellDef="let element">
+                {{ element.file_size }}
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="created">
+            <th mat-header-cell *matHeaderCellDef>Created</th>
+            <td mat-cell *matCellDef="let element">
+                {{ element.created | date: 'short' }}
+            </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+
     <mat-paginator #paginatorBottom [length]="length" [pageSize]="pageSize" [pageIndex]="pageIndex"
         [pageSizeOptions]="pageSizeOptions" showFirstLastButtons
         (page)="paginatorTop.pageSize = $event.pageSize; paginatorTop.pageIndex = $event.pageIndex; onPageEvent($event)">
