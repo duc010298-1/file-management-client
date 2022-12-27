@@ -1,4 +1,18 @@
-menu
+<mat-toolbar color="primary" class="toolbar">
+    <span>File Management</span>
+    <span class="spacer"></span>
+    <span>{{ username }}</span>
+    <button mat-icon-button [matMenuTriggerFor]="menu">
+        <mat-icon>account_circle</mat-icon>
+    </button>
+</mat-toolbar>
+
+<mat-menu #menu="matMenu">
+    <button mat-menu-item (click)="logout()">
+        <mat-icon>logout</mat-icon>
+        <span>Đăng xuất</span>
+    </button>
+</mat-menu>
 
 <div class="container">
     <router-outlet></router-outlet>
