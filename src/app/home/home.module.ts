@@ -7,6 +7,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatCardModule } from '@angular/material/card';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatTableModule } from '@angular/material/table';
 
 
 @NgModule({
@@ -20,6 +22,8 @@ import { MatCardModule } from '@angular/material/card';
     MatButtonModule,
     MatFormFieldModule,
     MatCardModule,
+    MatPaginatorModule,
+    MatTableModule,
   ]
 })
 export class HomeModule { }

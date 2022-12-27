@@ -9,7 +9,13 @@
     </mat-card-content>
 </mat-card>
 <mat-card class="mt-10px">
-    <mat-card-content>
-        aaaa
-    </mat-card-content>
+    <mat-paginator #paginatorTop [length]="length" [pageSize]="pageSize" [pageIndex]="pageIndex"
+        [pageSizeOptions]="pageSizeOptions" showFirstLastButtons
+        (page)="paginatorBottom.pageSize = $event.pageSize; paginatorBottom.pageIndex = $event.pageIndex; onPageEvent($event)">
+    </mat-paginator>
+    aaaa
+    <mat-paginator #paginatorBottom [length]="length" [pageSize]="pageSize" [pageIndex]="pageIndex"
+        [pageSizeOptions]="pageSizeOptions" showFirstLastButtons
+        (page)="paginatorTop.pageSize = $event.pageSize; paginatorTop.pageIndex = $event.pageIndex; onPageEvent($event)">
+    </mat-paginator>
 </mat-card>
