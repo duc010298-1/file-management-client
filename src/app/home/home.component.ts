@@ -201,4 +201,21 @@ export class HomeComponent implements AfterViewInit {
       }
     })
   }
+
+  deleteAll() {
+    this.fileService.deleteAllFile().subscribe({
+      next: (response: any) => {
+        this.requestSearch(this.pageSize, this.pageIndex, true);
+        this.sharedService.openNotifyDialog('Notify', 'Deleted all files');
+      },
+      error: (error: any) => {
+        const detail = error.error[Object.keys(error.error)[0]][0] || error.statusText || error.status;
+        switch (detail) {
+          default:
+            console.error(detail);
+            this.sharedService.openNotifyDialog('Error', 'Failed to load data, please reload the page');
+        }
+      }
+    });
+  }
 }

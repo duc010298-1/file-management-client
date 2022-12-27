@@ -13,6 +13,7 @@ export class FileService {
   private uploadFileUrl = this.baseUrl + '/upload-file/';
   private downloadFileUrl = this.baseUrl + '/download-file/';
   private deleteFileUrl = this.baseUrl + '/delete-file/';
+  private deleteAllFileUrl = this.baseUrl + '/delete-all-file/';
 
   constructor(
     private http: HttpClient
@@ -38,5 +39,9 @@ export class FileService {
 
   deleteFile(id: any) {
     return this.http.delete(this.deleteFileUrl + id);
+  }
+
+  deleteAllFile() {
+    return this.http.delete(this.deleteAllFileUrl);
   }
 }

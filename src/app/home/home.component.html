@@ -1,11 +1,15 @@
 <mat-card>
     <mat-card-content>
         <div class="d-flex justify-content-right">
-            <input type="file" hidden multiple (change)="onFileSelected($event)" #fileUpload>
-            <button mat-raised-button color="primary" (click)="fileUpload.click()">
+            <button mat-raised-button color="warn" (click)="deleteAll()">
+                <mat-icon>delete</mat-icon>
+                <mat-label>Delete all</mat-label>
+            </button>
+            <button mat-raised-button color="primary" class="ml-10px" (click)="fileUpload.click()">
                 <mat-icon>add</mat-icon>
                 <mat-label>Upload</mat-label>
             </button>
+            <input type="file" hidden multiple (change)="onFileSelected($event)" #fileUpload>
         </div>
         <div class="mt-10px" [style.visibility]="isUploading ? 'visible' : 'hidden'">
             <mat-label>Uploaded: {{ uploadProgress }}%</mat-label>
