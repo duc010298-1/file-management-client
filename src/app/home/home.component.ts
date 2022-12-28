@@ -1,4 +1,4 @@
-import { HttpEventType, HttpHeaders } from '@angular/common/http';
+import { HttpEventType } from '@angular/common/http';
 import { AfterViewInit, ChangeDetectorRef, Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { finalize } from 'rxjs';
@@ -143,6 +143,7 @@ export class HomeComponent implements AfterViewInit {
     this.isUploading = true;
     const upload$ = this.fileService.uploadFile(formData).pipe(
       finalize(() => {
+        event.target.value = null;
         this.uploadProgress = 0;
         this.isUploading = false;
         this.requestSearch(this.pageSize, this.pageIndex, true);
