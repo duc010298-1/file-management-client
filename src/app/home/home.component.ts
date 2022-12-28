@@ -98,15 +98,10 @@ export class HomeComponent implements AfterViewInit {
   }
 
   downloadFile(id: any) {
-    this.fileService.downloadFile(id)
+    this.fileService.signDownloadFile(id)
       .subscribe({
         next: (response: any) => {
-          const url = window.URL.createObjectURL(response.body);
-          const anchor = document.createElement('a');
-          anchor.href = url;
-          anchor.download = this.getFilenameFromHeaders(response.headers) || 'file';
-          anchor.click();
-          URL.revokeObjectURL(url);
+          this.fileService.downloadFile(response.ciphertext, response.nonce, response.tag)
         },
         error: (error: any) => {
           const detail = error.error[Object.keys(error.error)[0]][0] || error.statusText || error.status;
@@ -117,46 +112,6 @@ export class HomeComponent implements AfterViewInit {
           }
         }
       });
-  }
-
-  private getFilenameFromHeaders(headers: HttpHeaders) {
-    // The content-disposition header should include a suggested filename for the file
-    const contentDisposition = headers.get('Content-Disposition');
-    if (!contentDisposition) {
-      return null;
-    }
-
-    const leadIn = 'filename=';
-    const start = contentDisposition.search(leadIn);
-    if (start < 0) {
-      return null;
-    }
-
-    // Get the 'value' after the filename= part (which may be enclosed in quotes)
-    const value = contentDisposition.substring(start + leadIn.length).trim();
-    if (value.length === 0) {
-      return null;
-    }
-
-    // If it's not quoted, we can return the whole thing
-    const firstCharacter = value[0];
-    if (firstCharacter !== '\"' && firstCharacter !== '\'') {
-      return value;
-    }
-
-    // If it's quoted, it must have a matching end-quote
-    if (value.length < 2) {
-      return null;
-    }
-
-    // The end-quote must match the opening quote
-    const lastCharacter = value[value.length - 1];
-    if (lastCharacter !== firstCharacter) {
-      return null;
-    }
-
-    // Return the content of the quotes
-    return value.substring(1, value.length - 1);
   }
 
   deleteFile(id: any) {
