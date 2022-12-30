@@ -1,5 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { environment } from 'src/environments/environment';
 import { ConstantDef } from '../constant-def';
 
 @Injectable({
@@ -7,7 +8,7 @@ import { ConstantDef } from '../constant-def';
 })
 export class FileService {
 
-  private baseUrl = ConstantDef.API_URL + ConstantDef.FILE_PREFIX;
+  private baseUrl = environment.apiUrl + ConstantDef.FILE_PREFIX;
 
   private listFileUrl = this.baseUrl + '/list-file/';
   private uploadFileUrl = this.baseUrl + '/upload-file/';

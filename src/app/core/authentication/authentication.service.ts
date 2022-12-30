@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map, Observable, of } from 'rxjs';
-import { ConstantDef } from '../constant-def';
+import { environment } from 'src/environments/environment';
 import { Credentials, CredentialsService } from './credentials.service';
 
 export interface LoginContext {
@@ -14,7 +14,7 @@ export interface LoginContext {
   providedIn: 'root'
 })
 export class AuthenticationService {
-  private loginUrl = ConstantDef.API_URL + 'api/token/';
+  private loginUrl = environment.apiUrl + 'api/token/';
 
   constructor(
     private http: HttpClient,
