@@ -44,11 +44,11 @@ export class FileService {
   }
 
   signDownloadFile(id: any) {
-    return this.http.get(this.signDownloadFileUrl + id);
+    return this.http.get(this.signDownloadFileUrl + id + '/');
   }
 
   deleteFile(id: any) {
-    return this.http.delete(this.deleteFileUrl + id);
+    return this.http.delete(this.deleteFileUrl + id + '/');
   }
 
   deleteAllFile() {
