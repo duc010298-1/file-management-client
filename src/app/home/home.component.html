@@ -1,5 +1,5 @@
 <mat-card class="mt-10px">
-    <div class="action-bar action-bg ">
+    <div id="action-bar" class="action-bar action-bg ">
         <div class="d-flex">
             <button mat-stroked-button color="primary" (click)="fileUpload.click()">
                 <mat-icon>upload</mat-icon>
@@ -23,9 +23,9 @@
         </div>
         <input type="file" hidden multiple (change)="onFileSelected($event)" #fileUpload>
     </div>
-    <div class="overflow-scroll">
+    <div class="overflow-scroll" [style.max-height.px]="maxHeightTableContainer">
         <table mat-table [dataSource]="listData" class="mat-elevation-z8">
-            <ng-container matColumnDef="select">
+            <ng-container matColumnDef="select" sticky>
                 <th mat-header-cell *matHeaderCellDef class="w-1">
                     <mat-checkbox (change)="toggleAllRows()"
                         [checked]="selection.length > 0 && selection.length === listData.length"
@@ -60,7 +60,7 @@
                 </td>
             </ng-container>
 
-            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
             <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
             <tr class="mat-row" *matNoDataRow>
                 <td class="no-data" [attr.colspan]="displayedColumns.length">
@@ -70,7 +70,7 @@
         </table>
     </div>
 
-    <mat-paginator class="action-bg" #paginatorBottom [length]="length" [pageSize]="pageSize" [pageIndex]="pageIndex"
-        [pageSizeOptions]="pageSizeOptions" showFirstLastButtons (page)="onPageEvent($event)">
+    <mat-paginator id="mat-paginator" class="action-bg" #paginatorBottom [length]="length" [pageSize]="pageSize" [pageIndex]="pageIndex"
+        [pageSizeOptions]="pageSizeOptions" [hidePageSize]="isHidePageSize()" showFirstLastButtons (page)="onPageEvent($event)">
     </mat-paginator>
 </mat-card>

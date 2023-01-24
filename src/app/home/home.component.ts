@@ -1,5 +1,5 @@
 import { HttpEventType } from '@angular/common/http';
-import { AfterViewInit, ChangeDetectorRef, Component } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, HostListener } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { finalize } from 'rxjs';
@@ -24,6 +24,8 @@ export class HomeComponent implements AfterViewInit {
 
   isUploading = false
   uploadProgress = 0;
+
+  maxHeightTableContainer = 0;
 
   constructor(
     private titleService: Title,
@@ -50,6 +52,16 @@ export class HomeComponent implements AfterViewInit {
         this.requestSearch(this.pageSize, this.pageIndex);
       }
     }).unsubscribe();
+    setTimeout(() => {
+      this.getMaxHeightTableContainer();
+    });
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event: any) {
+    setTimeout(() => {
+      this.getMaxHeightTableContainer();
+    });
   }
 
   isNormalInteger(str: string) {
@@ -185,5 +197,22 @@ export class HomeComponent implements AfterViewInit {
         this.uploadProgress = Math.round(100 * (event.loaded / event.total));
       }
     })
+  }
+
+  getMaxHeightTableContainer() {
+    const windowHeight = window.innerHeight;
+    const toolbarEle = document.getElementById('toolbar');
+    const toolbarHeight = toolbarEle ? toolbarEle.offsetHeight : 0;
+    const actionBarEle = document.getElementById('action-bar');
+    const actionBarHeight = actionBarEle ? actionBarEle.offsetHeight : 0;
+    const matPaginatorEle = document.getElementById('mat-paginator');
+    const matPaginatorHeight = matPaginatorEle ? matPaginatorEle.offsetHeight : 0;
+    const paddingAndMargin = 30;
+    this.maxHeightTableContainer = windowHeight - toolbarHeight - actionBarHeight - matPaginatorHeight - paddingAndMargin;
+    this.cdr.detectChanges();
+  }
+
+  isHidePageSize() {
+    return window.innerWidth < 768;
   }
 }
