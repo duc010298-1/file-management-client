@@ -36,11 +36,14 @@ export class FileService {
   }
 
   downloadFile(ciphertext: string, nonce: string, tag: string) {
-    const url = new URL(this.downloadFileUrl);
+    let downloadFileUrl = this.downloadFileUrl;
+    if (downloadFileUrl.startsWith('/')) {
+      downloadFileUrl = `${window.location.origin}${downloadFileUrl}`;
+    }
+    const url = new URL(downloadFileUrl);
     url.searchParams.append('ciphertext', ciphertext);
     url.searchParams.append('nonce', nonce);
     url.searchParams.append('tag', tag);
-    console.log(url);
     window.location.assign(url);
   }
 
