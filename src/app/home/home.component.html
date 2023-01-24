@@ -1,5 +1,5 @@
 <mat-card class="mt-10px">
-    <div class="d-flex justify-content-between action">
+    <div class="action-bar action-bg ">
         <div class="d-flex">
             <button mat-stroked-button color="primary" (click)="fileUpload.click()">
                 <mat-icon>upload</mat-icon>
@@ -16,7 +16,7 @@
                 <mat-label>Delete</mat-label>
             </button>
         </div>
-        <div class="ml-50px w-100" *ngIf="isUploading">
+        <div class="progress-bar" *ngIf="isUploading">
             <mat-label>Uploaded: {{ uploadProgress }}%</mat-label>
             <mat-progress-bar class="mt-5px" color="primary" mode="determinate"
                 [value]="uploadProgress"></mat-progress-bar>
@@ -70,7 +70,7 @@
         </table>
     </div>
 
-    <mat-paginator #paginatorBottom [length]="length" [pageSize]="pageSize" [pageIndex]="pageIndex"
+    <mat-paginator class="action-bg" #paginatorBottom [length]="length" [pageSize]="pageSize" [pageIndex]="pageIndex"
         [pageSizeOptions]="pageSizeOptions" showFirstLastButtons (page)="onPageEvent($event)">
     </mat-paginator>
 </mat-card>
