@@ -212,7 +212,7 @@ export class HomeComponent implements AfterViewInit {
     this.cdr.detectChanges();
   }
 
-  isHidePageSize() {
+  isSmallScreen() {
     return window.innerWidth < 768;
   }
 }

@@ -2,17 +2,17 @@
     <div id="action-bar" class="action-bar action-bg ">
         <div class="d-flex">
             <button mat-stroked-button color="primary" (click)="fileUpload.click()">
-                <mat-icon>upload</mat-icon>
+                <mat-icon *ngIf="!isSmallScreen()">upload</mat-icon>
                 <mat-label>Upload</mat-label>
             </button>
             <button mat-stroked-button color="accent" class="ml-10px" (click)="download()"
                 [disabled]="selection.length === 0">
-                <mat-icon>download</mat-icon>
+                <mat-icon *ngIf="!isSmallScreen()">download</mat-icon>
                 <mat-label>Download</mat-label>
             </button>
             <button mat-stroked-button color="warn" class="ml-10px" (click)="deleteFile()"
                 [disabled]="selection.length === 0">
-                <mat-icon>delete</mat-icon>
+                <mat-icon *ngIf="!isSmallScreen()">delete</mat-icon>
                 <mat-label>Delete</mat-label>
             </button>
         </div>
@@ -71,6 +71,6 @@
     </div>
 
     <mat-paginator id="mat-paginator" class="action-bg" #paginatorBottom [length]="length" [pageSize]="pageSize" [pageIndex]="pageIndex"
-        [pageSizeOptions]="pageSizeOptions" [hidePageSize]="isHidePageSize()" showFirstLastButtons (page)="onPageEvent($event)">
+        [pageSizeOptions]="pageSizeOptions" [hidePageSize]="isSmallScreen()" showFirstLastButtons (page)="onPageEvent($event)">
     </mat-paginator>
 </mat-card>
