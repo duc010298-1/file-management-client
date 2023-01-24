@@ -30,7 +30,7 @@
                     <mat-checkbox (change)="toggleAllRows()"
                         [checked]="selection.length > 0 && selection.length === listData.length"
                         [indeterminate]="selection.length > 0 && selection.length < listData.length"
-                        [disabled]="selection.length == 0"></mat-checkbox>
+                        [disabled]="listData.length == 0"></mat-checkbox>
                 </th>
                 <td mat-cell *matCellDef="let element">
                     <mat-checkbox (click)="$event.stopPropagation()" (change)="toggleSelectElement(element.id)"
