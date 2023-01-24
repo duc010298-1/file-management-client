@@ -1,5 +1,6 @@
 import { HttpEventType } from '@angular/common/http';
 import { AfterViewInit, ChangeDetectorRef, Component } from '@angular/core';
+import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { finalize } from 'rxjs';
 import { FileService } from '../core/services/file.service';
@@ -24,6 +25,7 @@ export class HomeComponent implements AfterViewInit {
   uploadProgress = 0;
 
   constructor(
+    private titleService: Title,
     private route: ActivatedRoute,
     private router: Router,
     private sharedService: SharedService,
@@ -32,6 +34,7 @@ export class HomeComponent implements AfterViewInit {
   ) { }
 
   ngAfterViewInit(): void {
+    this.titleService.setTitle('File Management');
     this.route.queryParams.subscribe((params: any) => {
       const pageSizeParam = params.page_size;
       const pageIndexParam = params.page_index;
