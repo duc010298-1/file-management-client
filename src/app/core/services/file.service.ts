@@ -40,6 +40,7 @@ export class FileService {
     url.searchParams.append('ciphertext', ciphertext);
     url.searchParams.append('nonce', nonce);
     url.searchParams.append('tag', tag);
+    console.log(url);
     window.location.assign(url);
   }
 
