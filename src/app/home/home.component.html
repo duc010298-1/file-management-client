@@ -1,68 +1,58 @@
-<mat-card>
-    <mat-card-content>
-        <div class="d-flex justify-content-right">
-            <button mat-raised-button color="warn" (click)="deleteAll()">
-                <mat-icon>delete</mat-icon>
-                <mat-label>Delete all</mat-label>
-            </button>
-            <button mat-raised-button color="primary" class="ml-10px" (click)="fileUpload.click()">
-                <mat-icon>add</mat-icon>
+<mat-card class="mt-10px">
+    <div class="d-flex justify-content-between action">
+        <div class="d-flex">
+            <button mat-stroked-button color="primary" (click)="fileUpload.click()">
+                <mat-icon>upload</mat-icon>
                 <mat-label>Upload</mat-label>
             </button>
-            <input type="file" hidden multiple (change)="onFileSelected($event)" #fileUpload>
+            <button mat-stroked-button color="accent" class="ml-10px" (click)="download()" [disabled]="selection.length === 0">
+                <mat-icon>download</mat-icon>
+                <mat-label>Download</mat-label>
+            </button>
+            <button mat-stroked-button color="warn" class="ml-10px" (click)="deleteFile()" [disabled]="selection.length === 0">
+                <mat-icon>delete</mat-icon>
+                <mat-label>Delete</mat-label>
+            </button>
         </div>
-        <div class="mt-10px" [style.visibility]="isUploading ? 'visible' : 'hidden'">
+        <div class="ml-50px w-100" *ngIf="isUploading">
             <mat-label>Uploaded: {{ uploadProgress }}%</mat-label>
             <mat-progress-bar class="mt-5px" color="primary" mode="determinate"
                 [value]="uploadProgress"></mat-progress-bar>
         </div>
-    </mat-card-content>
-</mat-card>
-<mat-card class="mt-10px">
-    <mat-paginator #paginatorTop [length]="length" [pageSize]="pageSize" [pageIndex]="pageIndex"
-        [pageSizeOptions]="pageSizeOptions" showFirstLastButtons
-        (page)="paginatorBottom.pageSize = $event.pageSize; paginatorBottom.pageIndex = $event.pageIndex; onPageEvent($event)">
-    </mat-paginator>
-
+        <input type="file" hidden multiple (change)="onFileSelected($event)" #fileUpload>
+    </div>
     <div class="overflow-scroll">
         <table mat-table [dataSource]="listData" class="mat-elevation-z8">
-            <ng-container matColumnDef="index">
-                <th mat-header-cell *matHeaderCellDef>No</th>
-                <td mat-cell *matCellDef="let element; let i = index;">
-                    {{ pageIndex * pageSize + i + 1 }}
+            <ng-container matColumnDef="select">
+                <th mat-header-cell *matHeaderCellDef class="w-1">
+                    <mat-checkbox (change)="toggleAllRows()" [checked]="selection.length > 0 && selection.length === listData.length"
+                        [indeterminate]="selection.length > 0 && selection.length < listData.length"></mat-checkbox>
+                </th>
+                <td mat-cell *matCellDef="let element">
+                    <mat-checkbox (click)="$event.stopPropagation()" (change)="toggleSelectElement(element.id)"
+                        [checked]="isRowSelected(element.id)">
+                    </mat-checkbox>
                 </td>
             </ng-container>
 
             <ng-container matColumnDef="file_name">
-                <th mat-header-cell *matHeaderCellDef>File Name</th>
+                <th mat-header-cell *matHeaderCellDef>Name</th>
                 <td mat-cell *matCellDef="let element">
                     {{ element.file_name }}
                 </td>
             </ng-container>
 
-            <ng-container matColumnDef="file_size">
-                <th mat-header-cell *matHeaderCellDef>Size</th>
-                <td mat-cell *matCellDef="let element" class="nowrap">
-                    {{ element.file_size | fileSize }}
-                </td>
-            </ng-container>
-
             <ng-container matColumnDef="created">
-                <th mat-header-cell *matHeaderCellDef class="w-1">Created</th>
+                <th mat-header-cell *matHeaderCellDef class="w-30">Modified</th>
                 <td mat-cell *matCellDef="let element" class="nowrap">
                     {{ element.created | date: 'short' }}
                 </td>
             </ng-container>
 
-            <ng-container matColumnDef="tool">
-                <th mat-header-cell *matHeaderCellDef class="w-1"></th>
+            <ng-container matColumnDef="file_size">
+                <th mat-header-cell *matHeaderCellDef class="w-1">Size</th>
                 <td mat-cell *matCellDef="let element" class="nowrap">
-                    <button mat-mini-fab color="primary" (click)="downloadFile(element.id)">
-                        <mat-icon>download</mat-icon>
-                    </button>
-                    <button class="ml-10px" mat-mini-fab color="warn" (click)="deleteFile(element.id)">
-                        <mat-icon>delete</mat-icon>
-                    </button>
+                    {{ element.file_size | fileSize }}
                 </td>
             </ng-container>
 
@@ -77,7 +67,6 @@
     </div>
 
     <mat-paginator #paginatorBottom [length]="length" [pageSize]="pageSize" [pageIndex]="pageIndex"
-        [pageSizeOptions]="pageSizeOptions" showFirstLastButtons
-        (page)="paginatorTop.pageSize = $event.pageSize; paginatorTop.pageIndex = $event.pageIndex; onPageEvent($event)">
+        [pageSizeOptions]="pageSizeOptions" showFirstLastButtons (page)="onPageEvent($event)">
     </mat-paginator>
 </mat-card>

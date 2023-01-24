@@ -14,12 +14,13 @@ import { SharedService } from '../shared/shared.service';
 export class HomeComponent implements AfterViewInit {
 
   length = 0;
-  pageSize = 25;
+  pageSize = 100;
   pageIndex = 0;
   pageSizeOptions: number[] = [25, 50, 100, 200];
 
   listData = [];
-  displayedColumns: string[] = ['index', 'file_name', 'file_size', 'created', 'tool'];
+  selection: any[] = [];
+  displayedColumns: string[] = ['select', 'file_name', 'created', 'file_size'];
 
   isUploading = false
   uploadProgress = 0;
@@ -68,6 +69,7 @@ export class HomeComponent implements AfterViewInit {
           this.pageSize = data.page_size;
           this.pageIndex = data.page_number - 1;
           this.listData = [];
+          this.selection = [];
           if (this.length === 0) {
             return;
           }
@@ -100,11 +102,35 @@ export class HomeComponent implements AfterViewInit {
     });
   }
 
-  downloadFile(id: any) {
-    this.fileService.signDownloadFile(id)
+  toggleAllRows() {
+    if (this.selection.length > 0 && this.selection.length === this.listData.length) {
+      this.selection = [];
+    } else {
+      this.selection = [];
+      this.listData.forEach((ele: any) => {
+        this.selection.push(ele.id);
+      });
+    }
+  }
+
+  toggleSelectElement(id: string) {
+    const index = this.selection.indexOf(id);
+    if (index > -1) {
+      this.selection.splice(index, 1);
+    } else {
+      this.selection.push(id);
+    }
+  }
+
+  isRowSelected(id: string) {
+    return this.selection.includes(id);
+  }
+
+  download() {
+    this.fileService.signDownloadFile(this.selection)
       .subscribe({
         next: (response: any) => {
-          this.fileService.downloadFile(response.ciphertext, response.nonce, response.tag)
+          this.fileService.downloadFile(response.ciphertext, response.nonce, response.tag);
         },
         error: (error: any) => {
           const detail = error.error[Object.keys(error.error)[0]][0] || error.statusText || error.status;
@@ -117,8 +143,8 @@ export class HomeComponent implements AfterViewInit {
       });
   }
 
-  deleteFile(id: any) {
-    this.fileService.deleteFile(id).subscribe({
+  deleteFile() {
+    this.fileService.deleteFile(this.selection).subscribe({
       next: (response: any) => {
         this.requestSearch(this.pageSize, this.pageIndex, true);
       },
@@ -159,22 +185,5 @@ export class HomeComponent implements AfterViewInit {
         this.uploadProgress = Math.round(100 * (event.loaded / event.total));
       }
     })
-  }
-
-  deleteAll() {
-    this.fileService.deleteAllFile().subscribe({
-      next: (response: any) => {
-        this.requestSearch(this.pageSize, this.pageIndex, true);
-        this.sharedService.openNotifyDialog('Notify', 'Deleted all files');
-      },
-      error: (error: any) => {
-        const detail = error.error[Object.keys(error.error)[0]][0] || error.statusText || error.status;
-        switch (detail) {
-          default:
-            console.error(detail);
-            this.sharedService.openNotifyDialog('Error', 'Failed to load data, please reload the page');
-        }
-      }
-    });
   }
 }

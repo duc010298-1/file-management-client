@@ -47,15 +47,15 @@ export class FileService {
     window.location.assign(url);
   }
 
-  signDownloadFile(id: any) {
-    return this.http.get(`${this.signDownloadFileUrl}${id}/`);
+  signDownloadFile(list_file_id: any) {
+    const params = new HttpParams()
+      .set('list_file_id', JSON.stringify(list_file_id));
+    return this.http.get(this.signDownloadFileUrl, { params });
   }
 
-  deleteFile(id: any) {
-    return this.http.delete(`${this.deleteFileUrl}${id}/`);
-  }
-
-  deleteAllFile() {
-    return this.http.delete(this.deleteAllFileUrl);
+  deleteFile(list_file_id: any) {
+    const params = new HttpParams()
+      .set('list_file_id', JSON.stringify(list_file_id));
+    return this.http.delete(this.deleteFileUrl, { params });
   }
 }
